@@ -13,7 +13,7 @@ export const findAllUsers = async (req, res) =>{
    }
 }
 
-export const createMotors = async (req, res) =>{
+export const createUsers = async (req, res) =>{
     try {
         const users = await motorsServices.createUser(req.body)
 
