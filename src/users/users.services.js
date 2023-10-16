@@ -1,4 +1,4 @@
-import motors from "./motors.model.js";
+import motors from "./users.model.js";
 
 export class MotorsServices{
 

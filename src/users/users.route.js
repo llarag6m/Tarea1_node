@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { findAllUsers,createUsers,findOneUser,updateUser,deleteUser } from "./motors.controller.js"
+import { findAllUsers,createUsers,findOneUser,updateUser,deleteUser } from "./users.controller.js"
 
 export const router = Router()
 
