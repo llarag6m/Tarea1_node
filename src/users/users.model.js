@@ -1,5 +1,6 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/database/database.js";
+import { encryptedPassword } from "../config/plugins/encripted-password.plugin.js";
 
 const motors = sequelize.define("users",{
     id:{
@@ -27,10 +28,23 @@ const motors = sequelize.define("users",{
         allowNull: false
     },
     status:{
-        type: DataTypes.BOOLEAN,
+        type: DataTypes.ENUM(
+            'pending',
+            'inProgress',
+            'done',
+            'cancelled',
+            'delayed',
+            'available'
+        ),
         allowNull: false,
-        defaultValue: true
+        defaultValue: 'available'
     },
+},{
+    hooks:{
+        beforeCreate: async(user) =>{
+            user.password = await encryptedPassword(user.password)
+        }
+    }
 })
 
 

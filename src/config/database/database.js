@@ -1,6 +1,7 @@
 import { Sequelize } from "sequelize";
 import { envs } from "../enviroments/enviroments.js";
 
+
 const sequelize = new Sequelize(envs.DB_URI, {
     logging: false
 })

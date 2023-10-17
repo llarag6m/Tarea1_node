@@ -1,3 +1,4 @@
+import { validatePartialRepairs } from "./repairs.schema.js"
 import { RepairsServices } from "./repairs.services.js"
 
 const repairsServices = new RepairsServices()
@@ -28,18 +29,9 @@ export const findAllRepairs = async (req, res) =>{
 
  export const findOneRepair = async (req, res) =>{
     try {
-        const {id} = req.params
-    
-        const repair = await repairsServices.findOneRepair(id)
-    
-        if (!repair) {
-            return res.status(404).json({
-                status: "error",
-                menssage:`Motocicleta con el id ${id} no encontrado`
-            })
-        }
-    
-        return res.json(repair)
+        const { repair } = req
+
+        return res.status(200).json(repair)
     
     } catch (error) {
         return res.status(500).json(error)
@@ -48,18 +40,18 @@ export const findAllRepairs = async (req, res) =>{
     
     export const updateRepair = async (req, res) =>{
         try {
-            const { id } = req.params
-    
-            const repair = await repairsServices.findOneRepair(id)
+            const { repair } = req
+
+            const { hasError, errorMessages, repairsData} = validatePartialRepairs(req.body)
          
-            if (!repair) {
-                 return res.status(404).json({
-                     status: "error",
-                     menssage:`Motocicleta con el id ${id} no encontrado`
-                 })
+            if (hasError) {
+                return res.status(422).json({
+                    status: 'error',
+                    message: errorMessages
+                })
             }
-         
-            const updateRepair = await repairsServices.updateRepair(repair, req.body)
+
+            const updateRepair = await repairsServices.updateRepair(repair, repairsData)
          
             return res.json(updateRepair)
         } catch (error) {
@@ -68,19 +60,10 @@ export const findAllRepairs = async (req, res) =>{
     }
     
     
-    
     export const deleteRepair = async (req, res) =>{
         try {
-            const { id } = req.params
+            const { repair } = req
     
-            const repair = await repairsServices.findOneRepair(id)
-        
-            if (!repair) {
-                return res.status(404).json({
-                    status: "error",
-                    menssage:`Motocicleta con el id ${id} no encontrado`
-                })
-            }
         
             await repairsServices.deleteRepair(repair)
         

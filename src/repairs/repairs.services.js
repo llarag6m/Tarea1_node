@@ -5,7 +5,7 @@ export class RepairsServices {
     async findAllRepairs(){
         return await repair.findAll({
             where:{
-                status: true
+                status: 'pending'
             }
         })
     }
@@ -18,7 +18,7 @@ export class RepairsServices {
         return await repair.findOne({
             where:{
                 id:id,
-                status: true
+               /* status: true */
             }
         })
     }
@@ -28,6 +28,6 @@ export class RepairsServices {
     }
 
     async deleteRepair(repairs){
-        return await repairs.update({ status: false})
+        return await repairs.update({ status: 'cancelled'})
     }
 }

@@ -1,11 +1,11 @@
 import motors from "./users.model.js";
 
-export class MotorsServices{
+export class UsersServices{
 
-    async findAllMotors(){
+    async findAllUser(){
         return await motors.findAll({
             where:{
-                status: true
+                status: 'available'
             }
         })
     }
@@ -17,8 +17,7 @@ export class MotorsServices{
     async findOneUser(id){
         return await motors.findOne({
             where:{
-                id:id,
-                status: true
+                id
             }
         })
     }
@@ -28,7 +27,7 @@ export class MotorsServices{
     }
 
     async deleteUser (motor){
-        return await motor.update({ status: disable})
+        return await motor.update({ status: 'disable'})
     }
      
 }
