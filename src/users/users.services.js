@@ -1,6 +1,17 @@
+
 import motors from "./users.model.js";
 
 export class UsersServices{
+
+    async findByEmail(email){
+        return await motors.findOne({
+            where:{
+                email,
+                status: 'available'
+            }
+        })
+    }
+
 
     async findAllUser(){
         return await motors.findAll({
@@ -30,4 +41,7 @@ export class UsersServices{
         return await motor.update({ status: 'disable'})
     }
      
+  
 }
+
+
