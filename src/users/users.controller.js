@@ -120,16 +120,16 @@ export const changePassword = catchAsync(async(req, res, next) =>{
 }) 
 */
 
-export const findOneUser = async (req, res) =>{
-try {
-    const { user } = req
+export const findOneUser = (async (req, res, next) =>{
+    const { id } = req.params;
 
-    return res.status(200).json(user)
+    const user = await motorsServices.findOneUser(id)
 
-} catch (error) {
-    return res.status(500).json(error)
+    if (!user) {
+        return next(new AppError(`Usaurio con el id: ${id} no encontrado`, 404))
     }
-}
+    return res.json(user)
+})
 
 export const updateUser = async (req, res) =>{
     try {

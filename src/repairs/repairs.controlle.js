@@ -1,3 +1,5 @@
+import { AppError } from "../errors/appError.js"
+import { catchAsync } from "../errors/catchAsync.js"
 import { validatePartialRepairs } from "./repairs.schema.js"
 import { RepairsServices } from "./repairs.services.js"
 
@@ -15,10 +17,10 @@ try {
     }
 }
 
-export const findAllRepairs = async (req, res) =>{
+export const findAllRepairs =  async (req, res) =>{
     
     try {
-         const repair = await repairsServices.findAllRepairs()
+         const repair = await repairsServices.findAllDataServUser()
  
          return res.json(repair)
     } catch (error) {
@@ -27,17 +29,19 @@ export const findAllRepairs = async (req, res) =>{
  }
 
 
- export const findOneRepair = async (req, res) =>{
-    try {
-        const { repair } = req
+    export const findOneRepair =catchAsync( async (req, res, next) =>{
+    const { id } = req.params;
+ 
+    const repair = await repairsServices.findOneRepair(id)
 
-        return res.status(200).json(repair)
-    
-    } catch (error) {
-        return res.status(500).json(error)
-        }
+    if (!repair) {
+        return next(new AppError(`Motocicleta con el id: ${id} no encontrado`, 404))
     }
+    return res.json(repair)
+})   
     
+
+
     export const updateRepair = async (req, res) =>{
         try {
             const { repair } = req

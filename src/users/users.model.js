@@ -33,8 +33,7 @@ const motors = sequelize.define("users",{
             'inProgress',
             'done',
             'cancelled',
-            'delayed',
-            'available'
+            'delayed'
         ),
         allowNull: false,
         defaultValue: 'available'

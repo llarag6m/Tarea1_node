@@ -1,12 +1,30 @@
+import { Op } from "sequelize";
 import repair from "./repairs.model.js";
+import motors from "../users/users.model.js";
 
 export class RepairsServices {
 
     async findAllRepairs(){
         return await repair.findAll({
             where:{
-                status: 'pending'
+                status: status
             }
+        })
+    }
+
+    async findAllDataServUser(){
+        return await repair.findAll({
+            where:{
+                status: {
+                    [Op.notIn]:['cancelled']
+                }
+            },
+            include:[
+                {
+                    model: motors,
+                    attributes:['name','email']
+                }
+            ]
         })
     }
 
