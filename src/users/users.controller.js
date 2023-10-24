@@ -164,14 +164,17 @@ export const updateUser = async (req, res) =>{
 
 
 
-export const deleteUser = async (req, res) =>{
-    try {
-        const { user } = req
+export const deleteUser = catchAsync( async (req, res) =>{
+    const { id } = req.params;
+  
+    const user = await motorsServices.findOneUser(id)
 
-        await motorsServices.deleteUser(user)
-    
-        return res.status(204).json(null)
-    } catch (error) {
-        return res.status(500).json(error)
+    if (!user) {
+        return res.status(404).json({
+            status: 'error',
+            message: `Uusario con el id ${id} no fue encontrado`
+        })
     }
-}
+    await motorsServices.deleteUser(user)
+    return res.status(204).json(null)
+})
