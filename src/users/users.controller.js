@@ -92,9 +92,9 @@ export const createUsers = async (req, res) =>{
         return res.status(500).json(error)
     }
 }
-/*
+
 export const changePassword = catchAsync(async(req, res, next) =>{
-    const {users} = req
+    const {sessionUser} = req
 
 
     const { currentPassword, newPassword } = req.body
@@ -104,8 +104,8 @@ export const changePassword = catchAsync(async(req, res, next) =>{
     }
 
     const isCorrectPassword = await verifyPassword(
-        usersData.password,
-        users.password
+        currentPassword,
+        sessionUser.password
     )
 
     if (!isCorrectPassword) {
@@ -113,12 +113,12 @@ export const changePassword = catchAsync(async(req, res, next) =>{
     }
 
     const hashedNewPassword = await encryptedPassword(newPassword)
-    await motorsServices.updateUser(users, {
+    await motorsServices.updateUser(sessionUser, {
         password: hashedNewPassword,
 
     })
 }) 
-*/
+
 
 export const findOneUser = (async (req, res, next) =>{
     const { id } = req.params;

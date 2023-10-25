@@ -1,6 +1,6 @@
 import { Router } from "express"
 import { findAllUsers,createUsers,findOneUser,updateUser,deleteUser, login, register } from "./users.controller.js"
-import { protect, validateExistUsers } from "./users.middleware.js"
+import { protect, restricTo, validateExistUsers } from "./users.middleware.js"
 
 export const router = Router()
 
@@ -9,7 +9,12 @@ router.post('/register', register)
 /*
 router.patch('change_password', changePassword)
 */
-router.route("/").get(protect,findAllUsers).post(createUsers)
+router.route("/")
+.get(protect,findAllUsers)
+.post(createUsers)
 
 
-router.use("/:id", validateExistUsers).route("/:id").get(findOneUser).patch(updateUser).delete(deleteUser) 
+router.use("/:id", validateExistUsers)
+.route("/:id").get(findOneUser)
+.patch(protect,restricTo('user'),updateUser)
+.delete(protect,restricTo('user'),deleteUser) 

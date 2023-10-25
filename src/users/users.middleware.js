@@ -39,9 +39,34 @@ export const protect = catchAsync(async(req, res, next) =>{
 
     if (!user) {
         return next(
-            new AppError('El  token no esta disponible',401)
+            new AppError('El token no esta disponible',401)
         )
     }
 
-    
+    if (user.changePasswordAt) {
+        const changedTimeStamp = parseInt(
+            user.changePasswordAt.getTime() / 1000, 
+            10
+        )
+    }
+
+    if (decoded.iat < changedTimeStamp) {
+        return next(
+            new AppError("Contraseña cambiada actualmente logeate de nuevo")
+        )
+    }
+
+ req.sessionUser = user;
+ next()
+
+
 })
+
+export const restricTo = (...roles) =>{
+    return (req, res, next) =>{
+        if (!roles.includes(req.sessionUser.role)) {
+            return next(new AppError('NO tiene permisos para realizar esta accion', 403))
+        }
+        next()
+    }
+}
